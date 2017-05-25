@@ -290,9 +290,9 @@
 }
 #pragma mark -- 时间格式的字符串
 + (NSString *)TF_getNewTimeFormat:(NSString *)format {
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    formatter.dateFormat = format;
-    NSDate *date = [NSDate date];
+    NSDateFormatter *formatter  = [[NSDateFormatter alloc] init];
+    formatter.dateFormat        = format;
+    NSDate *date                = [NSDate date];
     return [formatter stringFromDate:date];
 }
 - (NSString *)TF_ymdFormat {
@@ -320,11 +320,19 @@
    return @"yyyy-MM-dd hh:mm:ss";
 }
 + (NSString *)TF_getTimeStamps {
-    NSDate *date = [NSDate date];
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    dateFormatter.dateFormat = @"yyyyMMddHHmmss";
+    NSDate *date                    = [NSDate date];
+    NSDateFormatter *dateFormatter  = [[NSDateFormatter alloc] init];
+    dateFormatter.dateFormat        = @"yyyyMMddHHmmss";
     return [dateFormatter stringFromDate:date];
 }
++ (NSString *)TF_getNewTimeFormat:(NSString *)format
+                             date:(NSDate *)date{
+    NSDateFormatter *formatter      = [[NSDateFormatter alloc] init];
+    formatter.dateFormat            = format;
+    return [formatter stringFromDate:date];
+}
+
+
 #pragma mark -- 判断时间早晚
 + (int)TF_compareDate:(NSDate *)oneday
    withAnotherDate:(NSDate *)anotherDay
@@ -334,12 +342,12 @@ withIsIncludeSecond:(BOOL)isIncludeSecond {
     NSString *oneDayStr;
     NSString *anotherDayStr;
     if (isIncludeSecond) {
-        oneDayStr       = [NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES]];
-        anotherDayStr   = [NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES]];
+        oneDayStr       = [NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date:oneday];
+        anotherDayStr   = [NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date:anotherDay];
         [dateFormatter setDateFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES]];
     }else {
-        oneDayStr       = [NSDate TF_getNewTimeFormat:@"yyyy-MM-dd hh:mm"];
-        anotherDayStr   = [NSDate TF_getNewTimeFormat:@"yyyy-MM-dd hh:mm"];
+        oneDayStr       = [NSDate TF_getNewTimeFormat:@"yyyy-MM-dd hh:mm" date:oneday];
+        anotherDayStr   = [NSDate TF_getNewTimeFormat:@"yyyy-MM-dd hh:mm" date:anotherDay];
         [dateFormatter setDateFormat:@"yyyy-MM-dd hh:mm"];
     }
   
@@ -491,5 +499,19 @@ withIsIncludeSecond:(BOOL)isIncludeSecond {
     [outPutFormatter setDateFormat:format];
     return [outPutFormatter dateFromString:dateStr];
 }
-
++ (NSDate *)TF_dateWithString:(NSString *)dateStr format:(NSString *)format {
+    NSDateFormatter *outPutFormatter = [NSDate TF_sharedDateFormatter];
+    [outPutFormatter setDateFormat:format];
+    return [outPutFormatter dateFromString:dateStr];
+}
+#pragma mark -- 获得当前本地时间
++ (NSDate *)TF_getCurrentDate{
+    NSDate * date = [NSDate date];
+    return [self TF_getLocationDate:date];
+}
++ (NSDate *)TF_getLocationDate:(NSDate *)date {
+    NSTimeZone *zone = [NSTimeZone systemTimeZone]; // 获得系统的时区
+    NSTimeInterval time = [zone secondsFromGMTForDate:date];// 以秒为单位返回当前时间与系统格林尼治时间的差
+    return  [date dateByAddingTimeInterval:time];// 然后把差的时间加上,就是当前系统准确的时间
+}
 @end

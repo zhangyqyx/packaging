@@ -176,6 +176,16 @@
  */
 + (NSString *)TF_getTimeStamps;
 
+/**
+ 获得对应时间格式的字符串
+
+ @param format 字符串格式
+ @param date 时间
+ @return 对应时间
+ */
++ (NSString *)TF_getNewTimeFormat:(NSString *)format
+                             date:(NSDate *)date;
+
 #pragma mark -- 判断时间早晚
 /**
  判断时间的先后
@@ -219,7 +229,6 @@ withIsIncludeSecond:(BOOL)isIncludeSecond;
 #pragma mark -- 返回时间时间格式字符串
 /**
  返回时间字符串（今天,明天 或者几月几号）
-
  @param date 传入的时间
  @return 字符串
  */
@@ -227,7 +236,6 @@ withIsIncludeSecond:(BOOL)isIncludeSecond;
 
 /**
  指定差值的字符串
- 
  @param delay 时间差值(小时)
  @return 日期字符串 “yyyy-MM-dd HH:mm:ss”
  */
@@ -277,7 +285,6 @@ withIsIncludeSecond:(BOOL)isIncludeSecond;
 + (NSString *)TF_dayFromWeekday:(NSDate *)date isEnglish:(BOOL)isEnglish;
 
 #pragma mark -- 其他
-
 /**
  英文格式的时间
 
@@ -286,5 +293,30 @@ withIsIncludeSecond:(BOOL)isIncludeSecond;
  @return NSDate
  */
 + (NSDate *)TF_dateWithLocalEN_USString:(NSString *)dateStr format:(NSString *)format;
+
+/**
+ 获得对应时间格式的NSDate
+
+ @param dateStr 时间字符串
+ @param format 格式
+ @return NSDate
+ */
++ (NSDate *)TF_dateWithString:(NSString *)dateStr format:(NSString *)format;
+
+
+#pragma mark -- 获得当前本地时间
+
+/**
+ 获得本地时间
+ @return 返回本地实时间
+ */
++ (NSDate *)TF_getCurrentDate;
+
+/**
+ 获得时间对应的本地时间
+ @param date 传入的时间
+ @return 本地时间
+ */
++ (NSDate *)TF_getLocationDate:(NSDate *)date;
 
 @end

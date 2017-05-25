@@ -32,9 +32,9 @@
 		9F6398861ED6AC1D006CAE97 /* TFDisplayView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6398711ED6AC1D006CAE97 /* TFDisplayView.m */; };
 		9F6398871ED6AC1D006CAE97 /* CTDispaleyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6398741ED6AC1D006CAE97 /* CTDispaleyView.m */; };
 		9F6398881ED6AC1D006CAE97 /* UIView+Frame.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6398761ED6AC1D006CAE97 /* UIView+Frame.m */; };
-		9F63988A1ED6AC1D006CAE97 /* TFHealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F63987C1ED6AC1D006CAE97 /* TFHealthManager.m */; };
 		9F63988D1ED6ACE3006CAE97 /* image2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F63988B1ED6ACE3006CAE97 /* image2.png */; };
 		9F63988E1ED6ACE3006CAE97 /* image1.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F63988C1ED6ACE3006CAE97 /* image1.png */; };
+		9F6398941ED6C792006CAE97 /* TFHealthManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6398931ED6C792006CAE97 /* TFHealthManager.m */; };
 		9F6541A21EA9F76500698DF7 /* UIButton+TFTimeBtn.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6541A11EA9F76500698DF7 /* UIButton+TFTimeBtn.m */; };
 		9F6541A91EAA042D00698DF7 /* UIButton+TFSubmitting.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F6541A81EAA042D00698DF7 /* UIButton+TFSubmitting.m */; };
 		9F67EDBE1ECA987C005B3582 /* TFAES.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F67EDBD1ECA987C005B3582 /* TFAES.m */; };
@@ -101,10 +101,10 @@
 		9F6398741ED6AC1D006CAE97 /* CTDispaleyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CTDispaleyView.m; sourceTree = "<group>"; };
 		9F6398751ED6AC1D006CAE97 /* UIView+Frame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIView+Frame.h"; sourceTree = "<group>"; };
 		9F6398761ED6AC1D006CAE97 /* UIView+Frame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIView+Frame.m"; sourceTree = "<group>"; };
-		9F63987B1ED6AC1D006CAE97 /* TFHealthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHealthManager.h; sourceTree = "<group>"; };
-		9F63987C1ED6AC1D006CAE97 /* TFHealthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHealthManager.m; sourceTree = "<group>"; };
 		9F63988B1ED6ACE3006CAE97 /* image2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image2.png; sourceTree = "<group>"; };
 		9F63988C1ED6ACE3006CAE97 /* image1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image1.png; sourceTree = "<group>"; };
+		9F6398921ED6C792006CAE97 /* TFHealthManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TFHealthManager.h; sourceTree = "<group>"; };
+		9F6398931ED6C792006CAE97 /* TFHealthManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TFHealthManager.m; sourceTree = "<group>"; };
 		9F65419F1EA9E09200698DF7 /* TFSingleton.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TFSingleton.h; sourceTree = "<group>"; };
 		9F6541A01EA9F76500698DF7 /* UIButton+TFTimeBtn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIButton+TFTimeBtn.h"; sourceTree = "<group>"; };
 		9F6541A11EA9F76500698DF7 /* UIButton+TFTimeBtn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIButton+TFTimeBtn.m"; sourceTree = "<group>"; };
@@ -386,8 +386,8 @@
 		9F6398771ED6AC1D006CAE97 /* healthKit */ = {
 			isa = PBXGroup;
 			children = (
-				9F63987B1ED6AC1D006CAE97 /* TFHealthManager.h */,
-				9F63987C1ED6AC1D006CAE97 /* TFHealthManager.m */,
+				9F6398921ED6C792006CAE97 /* TFHealthManager.h */,
+				9F6398931ED6C792006CAE97 /* TFHealthManager.m */,
 			);
 			path = healthKit;
 			sourceTree = "<group>";
@@ -586,7 +586,6 @@
 				9F6398801ED6AC1D006CAE97 /* CoreTextUtils.m in Sources */,
 				9F6398581ED6AAC2006CAE97 /* NSDate+TFDate.m in Sources */,
 				9F13D67A1EB1CCD0003E8FC4 /* UIViewController+TFTransitionAnimation.m in Sources */,
-				9F63988A1ED6AC1D006CAE97 /* TFHealthManager.m in Sources */,
 				9F6B2A001EA45A84002C2280 /* TFArbitrarilyButton.m in Sources */,
 				9F5B7BE01ECC121500010023 /* TFBase64.m in Sources */,
 				9FDE87BC1EC55CC1004419EA /* Tool.m in Sources */,
@@ -606,6 +605,7 @@
 				9F5B7BDC1ECBFBA000010023 /* GTMBase64.m in Sources */,
 				9F6398871ED6AC1D006CAE97 /* CTDispaleyView.m in Sources */,
 				9F7F00041EADF51100AF9EA6 /* UIColor+TFColor.m in Sources */,
+				9F6398941ED6C792006CAE97 /* TFHealthManager.m in Sources */,
 				9F13D67D1EB1D280003E8FC4 /* TFTestViewController.m in Sources */,
 				9F9893261EB08DE400CD3D40 /* TFTransitonAnimation.m in Sources */,
 				9FD121E01E8FA93100860035 /* TFUpDownBtn.m in Sources */,

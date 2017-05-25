@@ -79,4 +79,13 @@ typedef NS_ENUM(NSUInteger, TFHealthIntervalUnit) {
  */
 + (void)TF_getStepCountWithHourOf0ClockBlock:(void (^)(NSArray *queryResults))queryResultBlock;
 
+#pragma mark -- 获取当天的数据
+
+/**
+ 获取当天的数据
+ @param unit 数据段类型
+ @param queryResultBlock 返回数据
+ */
++ (void)TF_getDayHealthWithType:(TFQuantityType)unit
+               queryResultBlock:(void (^)(NSArray *queryResults))queryResultBlock;
 @end

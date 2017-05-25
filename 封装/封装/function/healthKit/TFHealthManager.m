@@ -158,30 +158,11 @@ static NSString *const kTotalStepCountKey = @"totalStepCount";
                            endDate:(NSDate *)endDate
                        hComponents:(NSDateComponents *)hComponents
                   queryResultBlock:(void (^)(NSArray *queryResults))queryResultBlock {
-    HKQuantityType *quantityType        = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
-    NSPredicate *predicate              = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
-    NSUInteger op                       = HKStatisticsOptionCumulativeSum;
-    HKStatisticsCollectionQuery  *query = [[HKStatisticsCollectionQuery alloc] initWithQuantityType:quantityType quantitySamplePredicate:predicate options:op anchorDate:startDate intervalComponents:hComponents];
-    query.initialResultsHandler         = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection * __nullable result, NSError * __nullable error) {
-        if (error){
-            NSLog(@"统计update出错 %@", error);
-            return;
-        }else {
-            NSMutableArray *array       = [NSMutableArray array];
-            for (HKStatistics *statist in result.statistics){
-                double sum4             = [statist.sumQuantity doubleValueForUnit:[HKUnit countUnit]];
-                NSDictionary *dic       = @{@"stepCount":@(sum4),
-                                            @"startDate":[NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date:statist.startDate] ,
-                                            @"endDate":[NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date: statist.endDate]
-                                            };
-                [array addObject:dic];
-            }
-            if (queryResultBlock) {
-                queryResultBlock(array);
-            }
-        };
-    };
-    [[TFHealthManager TF_standardHealthManager].healthStore executeQuery:query];
+    [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeStep  type:[HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount] queryResultBlock:^(NSArray *queryResults) {
+        if (queryResultBlock) {
+            queryResultBlock(queryResults);
+        }
+    }];
 }
 
 //#pragma mark --比较详尽的所有数据信息
@@ -279,9 +260,158 @@ static NSString *const kTotalStepCountKey = @"totalStepCount";
     }
     return [allDatePeriods copy];
 }
+#pragma mark -- 获取当天的数据
++ (void)TF_getDayHealthWithType:(TFQuantityType)unit
+               queryResultBlock:(void (^)(NSArray *queryResults))queryResultBlock{
+    __block NSCalendar *calendar    = [NSDate TF_sharedCalendar];
+    NSDate *endDate                 = [NSDate TF_getCurrentDate];
+    NSDate *startDate               = [NSDate TF_dateAfterDate:endDate day:-1];
+    NSDateComponents *hComponents   = [calendar components:NSCalendarUnitHour fromDate:endDate];
+    [hComponents setHour:1];
+    HKQuantityType *quantityType;
+    switch (unit) {
+        case TFQuantityTypeStep:
+        {  quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierStepCount];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeStep type:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeWalking:
+        {   quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceWalkingRunning];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeWalking type:quantityType  queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeCycling:
+        {
+            quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceCycling];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeCycling type:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeSwimming:
+            
+        {
+            quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierDistanceSwimming];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeSwimming type:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeActiveEnergyBurned:
+            
+        {
+            quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeActiveEnergyBurned type:quantityType  queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeBasalEnergyBurned:
+        {
+            quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBasalEnergyBurned];
+            [self TF_fetchAllHealthStartDate:startDate endDate:endDate hComponents:hComponents quantityType:TFQuantityTypeBasalEnergyBurned type:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            
+            break;
+        case TFQuantityTypeHeight:
+        {
+         quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierHeight];
+            [self TF_getHeightWithWidth:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+        case TFQuantityTypeBodyMass:
+        {
+           quantityType  = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierBodyMass];
+            [self TF_getHeightWithWidth:quantityType queryResultBlock:^(NSArray *queryResults) {
+                if (queryResultBlock) {
+                    queryResultBlock(queryResults);
+                }
+            }];
+        }
+            break;
+    }
+}
+//根据不同类型获取不同的数据,返回不同的数据
++ (void)TF_fetchAllHealthStartDate:(NSDate *)startDate
+                           endDate:(NSDate *)endDate
+                       hComponents:(NSDateComponents *)hComponents
+                      quantityType:(TFQuantityType)unit
+                              type:(HKQuantityType *)quantityType
+                  queryResultBlock:(void (^)(NSArray *queryResults))queryResultBlock {
+    NSPredicate *predicate              = [HKQuery predicateForSamplesWithStartDate:startDate endDate:endDate options:HKQueryOptionStrictStartDate];
+    NSUInteger op                       = HKStatisticsOptionCumulativeSum;
+    HKStatisticsCollectionQuery  *query = [[HKStatisticsCollectionQuery alloc] initWithQuantityType:quantityType quantitySamplePredicate:predicate options:op anchorDate:startDate intervalComponents:hComponents];
+    query.initialResultsHandler         = ^(HKStatisticsCollectionQuery *query, HKStatisticsCollection * __nullable result, NSError * __nullable error) {
+        if (error){
+            NSLog(@"统计update出错 %@", error);
+            return;
+        }else {
+            NSMutableArray *array       = [NSMutableArray array];
+            for (HKStatistics *statist in result.statistics){
+                
+                double sum4;
+                if (unit == TFQuantityTypeStep) {
+                   sum4             = [statist.sumQuantity doubleValueForUnit:[HKUnit countUnit]];
+                }else if (unit ==TFQuantityTypeWalking || unit ==TFQuantityTypeCycling || unit == TFQuantityTypeSwimming) {
+                   sum4             = [statist.sumQuantity doubleValueForUnit:[HKUnit meterUnit]];
+                }else if (unit ==TFQuantityTypeActiveEnergyBurned || unit ==TFQuantityTypeBasalEnergyBurned) {
+                  sum4             = [statist.sumQuantity doubleValueForUnit:[HKUnit kilocalorieUnit]];
+                }
+                NSDictionary *dic       = @{@"stepCount":@(sum4),
+                                            @"startDate":[NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date:statist.startDate] ,
+                                            @"endDate":[NSDate TF_getNewTimeFormat:[NSDate TF_ymd_hmsFormatIs24hour:YES] date: statist.endDate]
+                                            };
+                [array addObject:dic];
+            }
+            if (queryResultBlock) {
+                queryResultBlock(array);
+            }
+        };
+    };
+    [[TFHealthManager TF_standardHealthManager].healthStore executeQuery:query];
+}
 
-
-
-
++ (void)TF_getHeightWithWidth:(HKSampleType *)sampleType queryResultBlock:(void (^)(NSArray *queryResults))queryResultBlock  {
+    NSPredicate *predicate              = [HKQuery predicateForSamplesWithStartDate:nil endDate:nil options:HKQueryOptionStrictStartDate];
+    NSSortDescriptor *sortDescriptor    = [NSSortDescriptor sortDescriptorWithKey:HKSampleSortIdentifierStartDate ascending:YES];
+    HKSampleQuery *sampleQuery          = [[HKSampleQuery alloc] initWithSampleType:sampleType predicate:predicate limit:HKObjectQueryNoLimit sortDescriptors:@[sortDescriptor] resultsHandler:^(HKSampleQuery *query, NSArray *results, NSError *error) {
+          NSMutableArray *array       = [NSMutableArray array];
+        if(!error && results) {
+            for(HKQuantitySample *samples in results) {
+                NSDictionary *dic       = @{@"stepCount":samples.quantity,
+                                            @"startDate":samples.startDate ,
+                                            @"endDate":samples.endDate
+                                            };
+                [array addObject:dic];
+            }
+        }
+        if (queryResultBlock) {
+            queryResultBlock(array);
+        }
+    }];
+    [[TFHealthManager TF_standardHealthManager].healthStore executeQuery:sampleQuery];
+}
 
 @end
